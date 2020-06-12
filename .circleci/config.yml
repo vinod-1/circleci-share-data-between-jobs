@@ -52,6 +52,14 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/enki-project
+  SmokeTest:
+    working_directory: ~/enki-project
+    docker:
+      - image: circleci/node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/enki-project
 
 #  install:
 ##    working_directory: ~/enki-project
@@ -103,3 +111,6 @@ workflows:
             - Build
             - Test
             - CodeQuality
+      - SmokeTest:
+          requires:
+            - Publish
