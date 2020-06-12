@@ -98,7 +98,7 @@ workflows:
       - CodeQuality:
           requires:
             - Checkout
-      - publish:
+      - Publish:
           requires:
             - Build
             - Test
