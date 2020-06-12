@@ -99,13 +99,13 @@ workflows:
             - Checkout
       - Build:
           requires:
-            - Checkout
+            - Install
       - Test:
           requires:
-            - Checkout
+            - Install
       - CodeQuality:
           requires:
-            - Checkout
+            - Install
       - Publish:
           requires:
             - Build
