@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  install:
+  Checkout:
     working_directory: ~/enki-project
     docker:
       - image: circleci/node:8.10.0
@@ -9,31 +9,104 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/enki-project
-      - run:
-          name: install
-          command: |
-            npm init --yes;
-            npm install cowsay
-      - persist_to_workspace:
-          root: ~/enki-project
-          paths: ./node_modules
 
-  use:
+  Install:
     working_directory: ~/enki-project
-    machine: true
+    docker:
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
           at: ~/enki-project
-      - run:
-          name: use
-          command: |
-            ./node_modules/.bin/cowsay CicleCI is cool!
+
+  Build:
+    working_directory: ~/enki-project
+    docker:
+      - image: circleci/node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/enki-project
+  Build:
+    working_directory: ~/enki-project
+    docker:
+      - image: circleci/node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/enki-project
+  Test:
+    working_directory: ~/enki-project
+    docker:
+      - image: circleci/node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/enki-project
+  CodeQuality:
+    working_directory: ~/enki-project
+    docker:
+      - image: circleci/node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/enki-project
+  Publish:
+    working_directory: ~/enki-project
+    docker:
+      - image: circleci/node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/enki-project
+
+#  install:
+##    working_directory: ~/enki-project
+ #   docker:
+ #     - image: circleci/node:8.10.0
+ #   steps:
+ #     - checkout
+ #     - attach_workspace:
+ #         at: ~/enki-project
+ #     - run:
+ #         name: install
+ #         command: |
+ #           npm init --yes;
+ #           npm install cowsay
+ #     - persist_to_workspace:
+ #         root: ~/enki-project
+ #         paths: ./node_modules
+
+  #use:
+  #  working_directory: ~/enki-project
+  #  machine: true
+  #  steps:
+  #    - checkout
+  #    - attach_workspace:
+  #        at: ~/enki-project
+  #    - run:
+  #        name: use
+  #        command: |
+  #          ./node_modules/.bin/cowsay CicleCI is cool!
 workflows:
   version: 2
   install_use:
     jobs:
-      - install
-      - use:
+      - Checkout
+      - Install:
           requires:
-            - install
+            - Checkout
+      - Build:
+          requires:
+            - Checkout
+      - Test:
+          requires:
+            - Checkout
+      - CodeQuality:
+          requires:
+            - Checkout
+      - publish:
+          requires:
+            - Build
+            - Test
+            - CodeQuality
