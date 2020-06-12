@@ -27,14 +27,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/enki-project
-  Build:
-    working_directory: ~/enki-project
-    docker:
-      - image: circleci/node:8.10.0
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/enki-project
+
   Test:
     working_directory: ~/enki-project
     docker:
